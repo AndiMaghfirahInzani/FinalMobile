@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MovieFragment">
+
+    <LinearLayout
+        android:id="@+id/llConnection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/connection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please check your internet connection"
+            android:textSize="17dp"
+            />
+
+        <ImageView
+            android:id="@+id/ivLoad"
+            app:tint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_replay_24"/>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/carditem"
+        android:paddingHorizontal="10dp" />
+
+
+</FrameLayout>
