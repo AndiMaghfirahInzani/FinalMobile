@@ -1,46 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MovieFragment">
+    tools:context="TvFragment">
 
-    <LinearLayout
-        android:id="@+id/llConnection"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swl_tv_show"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/connection"
+        android:layout_height="match_parent">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Please check your internet connection"
-            android:textSize="17dp"
-            />
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/ll_tv_show_empty"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gagal memuat data"
+                    android:textColor="@color/white"
+                    android:textSize="21dp"
+                    android:layout_marginTop="10dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Koneksi kurang baik, coba muat ulang"
+                    android:textColor="@color/mainGray"
+                    android:layout_marginTop="6dp"/>
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/carditem"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_centerInParent="true"
+                />
 
-        <ImageView
-            android:id="@+id/ivLoad"
-            app:tint="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_replay_24"/>
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/carditem"
-        android:paddingHorizontal="10dp" />
-
-
-</FrameLayout>
+            <ProgressBar
+                android:id="@+id/pb_tv_show"
+                android:indeterminateTint="@color/mainBlue"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:visibility="visible"
+                android:layout_centerInParent="true"
+                />
+        </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</RelativeLayout>
