@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.finaltaskandroid.Adapter.MovieAdapter;
 import com.example.finaltaskandroid.Models.MovieResponse;
@@ -25,6 +26,7 @@ import retrofit2.Response;
 
 public class MovieFragment extends Fragment {
     MovieAdapter movieAdapter;
+    private ProgressBar progressBar;
     RecyclerView rv;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +40,7 @@ public class MovieFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rv = view.findViewById(R.id.rvMovie);
+        progressBar = view.findViewById(R.id.pb_movie);
 
 
         ApiConfig.getApiService().getMovie(ApiConfig.getApikey()).enqueue(new Callback<MovieResponse>(){
@@ -50,6 +53,7 @@ public class MovieFragment extends Fragment {
                     int numberOfColumns = 2; // Jumlah kolom yang diinginkan
                     GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), numberOfColumns);
                     rv.setLayoutManager(layoutManager  );
+                    progressBar.setVisibility(View.GONE);
                 }
             }
             @Override
