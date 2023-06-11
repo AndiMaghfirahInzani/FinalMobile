@@ -1,5 +1,7 @@
 package com.example.finaltaskandroid.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.finaltaskandroid.MainActivity2;
 import com.example.finaltaskandroid.Models.Movie;
 import com.example.finaltaskandroid.R;
 
@@ -19,13 +24,9 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.GridViewHolder>{
 
     private final List<Movie> movieList;
-    private AdapterView.OnItemClickListener clickListener;
 
     public MovieAdapter(List<Movie> movieList){
         this.movieList = movieList;
-    }
-    public void setClickListener(AdapterView.OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -36,8 +37,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.GridViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieAdapter.GridViewHolder holder, int position) {
-        holder.onBindItemView(movieList.get(position));
+    public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
+        Movie movie = movieList.get(position);
+        Context c = holder.itemView.getContext();
+        Glide.with(c).load("https://image.tmdb.org/t/p/w200/" + movie.getPoster()).into(holder.ivPoster);
+        holder.tvTitle.setText(movie.getTitle());
+        holder.tvYear.setText(movie.getYear());
+        holder.itemView.setOnClickListener(view->{
+            Intent toDetail = new Intent(c, MainActivity2.class);
+            toDetail.putExtra(MainActivity2.EXTRA_DATA, movie);
+            toDetail.putExtra(MainActivity2.EXTRA_TYPE, "MOVIE");
+            c.startActivity(toDetail);
+        });
+
 
     }
     public void appendList(List<Movie> listToAppend) {
@@ -54,30 +66,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.GridViewHold
         this.movieList.addAll(movie);
     }
 
-    public class GridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        Movie movie;
+    public class GridViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPoster;
         TextView tvTitle;
         TextView tvYear;
         public GridViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
             ivPoster = itemView.findViewById(R.id.ivPoster);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvYear = itemView.findViewById(R.id.tvYear);
         }
-        void onBindItemView(Movie movie) {
-            //set value
-            this.movie = movie;
-            Glide.with(itemView.getContext()).load("https://image.tmdb.org/t/p/w200/" + movie.getPosterpath()).into(ivPoster);
-            tvTitle.setText(movie.getTitle());
-            tvYear.setText(movie.getYear());
-        }
 
-
-        @Override
-        public void onClick(View view) {
-
-        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.finaltaskandroid.Adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,13 +25,9 @@ import java.util.List;
 public class TvAdapter extends RecyclerView.Adapter<TvAdapter.GridViewHolder> {
 
     private final List<TvShow> tvShowList;
-    private AdapterView.OnItemClickListener clickListener;
 
     public TvAdapter(List<TvShow> tvShowList){
         this.tvShowList = tvShowList;
-    }
-    public void setClickListener(AdapterView.OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
 
@@ -44,16 +41,15 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.GridViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TvAdapter.GridViewHolder holder, int position) {
         TvShow tvShow = tvShowList.get(position);
+        Context c = holder.itemView.getContext();
+        Glide.with(c).load("https://image.tmdb.org/t/p/w200/" + tvShow.getPoster()).into(holder.ivPoster);
         holder.tvTitle.setText(tvShow.getName());
         holder.tvYear.setText(tvShow.getReleaseYear());
-        Glide.with(holder.itemView.getContext()).load("https://image.tmdb.org/t/p/w200/" + tvShowList.get(position).getPoster())
-                .apply(RequestOptions.bitmapTransform(new RoundedCorners(25))).into(holder.ivPoster);
-        holder.tvTitle.setText(tvShowList.get(position).getName());
-
-        holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent((holder.itemView.getContext()), MainActivity2.class);
-            intent.putExtra("tvShow", tvShow);
-            holder.itemView.getContext().startActivity(intent);
+        holder.itemView.setOnClickListener(view->{
+            Intent toDetail = new Intent(c, MainActivity2.class);
+            toDetail.putExtra(MainActivity2.EXTRA_DATA, tvShow);
+            toDetail.putExtra(MainActivity2.EXTRA_TYPE, "TV");
+            c.startActivity(toDetail);
         });
 
     }
@@ -71,30 +67,15 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.GridViewHolder> {
         this.tvShowList.addAll(tvShows);
     }
 
-    public class GridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        TvShow tvShow;
+    public class GridViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPoster;
         TextView tvTitle;
         TextView tvYear;
         public GridViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
-
             ivPoster = itemView.findViewById(R.id.ivPoster);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvYear = itemView.findViewById(R.id.tvYear);
-        }
-
-        public void onBindItemView(TvShow tvShow) {
-            this.tvShow = tvShow;
-            Glide.with(itemView.getContext()).load("https://image.tmdb.org/t/p/w200/" + tvShow.getPoster()).into(ivPoster);
-            tvTitle.setText(tvShow.getName());
-            tvYear.setText(tvShow.getReleaseYear());
-        }
-        @Override
-        public void onClick(View view) {
-
         }
     }
 }
